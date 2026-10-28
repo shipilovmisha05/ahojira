@@ -10,6 +10,8 @@
 <meta property="og:image" content="https://ahojira.cz/img/ira.jpg">
 <meta name="theme-color" content="#2B1A12">
 <link rel="icon" href="img/ira.jpg">
+<!-- статистика Umami Cloud (Миша 28.10.26): заходы + клики по карточкам; считает только на ahojira.cz, без cookies -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="68bdfc5b-1fd6-4fef-876e-a24334b8cd87" data-domains="ahojira.cz,www.ahojira.cz"></script>
 <style>
   /* ahojira.cz - сайт блога Иры (Миша, 27.10.26). Палитра и шрифты - как у сторис «Скидки недели» (036_ira_stories).
      v2: текст главный, фото полоской; у каждой карточки кнопка с ценой; одна колонка; первая скидка видна без прокрутки.
@@ -97,7 +99,7 @@
   <header>
     <div class="ava"><img src="img/ira.jpg" alt="Ира"></div>
     <div class="who"><b>Ahoj, Ira</b><span>Нескучная Чехия, Прага</span></div>
-    <a class="ig" href="https://www.instagram.com/ahoj_ira/" target="_blank" rel="noopener" aria-label="Инстаграм Иры">
+    <a class="ig" href="https://www.instagram.com/ahoj_ira/" target="_blank" rel="noopener" data-umami-event="Инстаграм (шапка)" aria-label="Инстаграм Иры">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
     </a>
   </header>
@@ -111,7 +113,7 @@
   <main id="groups"></main>
 
   <footer>
-    <a class="ig2" href="https://www.instagram.com/ahoj_ira/" target="_blank" rel="noopener">
+    <a class="ig2" href="https://www.instagram.com/ahoj_ira/" target="_blank" rel="noopener" data-umami-event="Инстаграм (низ)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
       @ahoj_ira
     </a>
@@ -144,10 +146,10 @@ const DEALS = [
 
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 document.getElementById('week').textContent = WEEK;
-document.getElementById('tabs').innerHTML = GROUPS.map(([k, t]) => `<a href="#${k}" data-k="${k}" style="--g:${COLORS[k]}">${t}</a>`).join('');
+document.getElementById('tabs').innerHTML = GROUPS.map(([k, t]) => `<a href="#${k}" data-k="${k}" style="--g:${COLORS[k]}" data-umami-event="вкладка: ${t}">${t}</a>`).join('');
 document.getElementById('groups').innerHTML = GROUPS.map(([k, t]) =>
   `<section id="${k}"><h2>${t}</h2><div class="list">` + DEALS.filter(d => d[0] === k).map(([, slug, off, what, place, area, price]) =>
-    `<a class="card" href="https://www.slevomat.cz/akce/${slug}${AFF}" target="_blank" rel="sponsored noopener">
+    `<a class="card" href="https://www.slevomat.cz/akce/${slug}${AFF}" target="_blank" rel="sponsored noopener" data-umami-event="${esc(what)}" data-umami-event-group="${t}" data-umami-event-off="-${off}%">
       <div class="ph"><img src="img/d_${slug.split('-')[0]}.jpg" alt="" loading="lazy"><span class="off">-${off}%</span></div>
       <div class="bd">
         <span class="what">${esc(what)}</span>
