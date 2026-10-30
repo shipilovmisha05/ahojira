@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ahoj, Ira - скидки недели в Праге</title>
-<meta name="description" content="Лучшие скидки недели в Праге от Иры: для неё, для него, для деток и вдвоём.">
-<meta property="og:title" content="Ahoj, Ira - скидки недели в Праге">
-<meta property="og:description" content="Лучшие скидки недели в Праге: для неё, для него, для деток и вдвоём.">
+<title>Ahoj, Ira - скидки и поездки по Праге</title>
+<meta name="description" content="Скидки недели в Праге и куда съездить - от Иры.">
+<meta property="og:title" content="Ahoj, Ira">
+<meta property="og:description" content="Скидки недели в Праге и куда съездить.">
 <meta property="og:image" content="https://ahojira.cz/img/ira.jpg">
 <meta name="theme-color" content="#2B1A12">
 <link rel="icon" href="img/ira.jpg">
@@ -15,7 +15,7 @@
 <style>
   /* ahojira.cz - сайт блога Иры (Миша, 27.10.26). Палитра и шрифты - как у сторис «Скидки недели» (036_ira_stories).
      v2: текст главный, фото полоской; у каждой карточки кнопка с ценой; одна колонка; первая скидка видна без прокрутки.
-     Скидки - массив DEALS внизу, обновлять каждый понедельник: даты в WEEK, строки в DEALS, фото в img/d_<id>.jpg. */
+     Главная (Миша 30.10.26) - две плитки: /skidki/ (скидки недели, ПН) и /trips/ (куда съездить, СР). Стикеры в сторис ведут сразу на свою страницу. */
   @font-face { font-family: Corm; src: url(fonts/Cormorant-Italic.woff2) format('woff2'); font-weight: 300 700; font-style: italic; font-display: swap; }
   @font-face { font-family: Onest; src: url(fonts/Onest.woff2) format('woff2'); font-weight: 100 900; font-display: swap; }
   @font-face { font-family: Unb; src: url(fonts/Unbounded.woff2) format('woff2'); font-weight: 200 900; font-display: swap; }
@@ -42,55 +42,25 @@
   .ig { flex: 0 0 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--line); }
   .ig svg { width: 22px; height: 22px; }
 
-  .week { padding: 26px 0 0; }
-  .week h1 { font-family: Corm; font-style: italic; font-weight: 600; font-size: 52px; line-height: 1; letter-spacing: -1px; color: var(--cream); }
-  .week p { margin-top: 8px; font-size: 18px; color: var(--dim); }
-  .week p b { color: var(--butter); font-weight: 600; }
 
-  /* вкладки групп: крупные, липнут к верху; на узком экране листаются пальцем */
-  nav { position: sticky; top: 0; z-index: 20; margin: 18px -16px 0; padding: 12px 16px;
-    background: rgba(43,26,18,.9); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(244,180,142,.12); }
-  nav .row { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
-  nav .row::-webkit-scrollbar { display: none; }
-  /* у каждой группы свой цвет (--g): вкладка, рамка блока, заголовок, скидка, цена (Миша 27.10.26: «раздели, выдели цветами») */
-  #her { --g: #F4B48E; } #him { --g: #F2DB98; } #kids { --g: #A9CDA2; } #two { --g: #E9967A; }
-  nav a { flex: 0 0 auto; height: 48px; display: flex; align-items: center; gap: 9px; padding: 0 18px; border-radius: 999px; font-weight: 600; font-size: 18px;
-    color: var(--cream); background: rgba(246,236,223,.06); box-shadow: inset 0 0 0 1.5px var(--line); transition: background .2s ease-out, color .2s ease-out; }
-  nav a::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--g); }
-  nav a.on { background: var(--g); color: var(--choc); box-shadow: none; }
-  nav a.on::before { background: var(--choc); }
-
-  /* группа - отдельный блок своего цвета; между блоками пусто, внутри карточки плотно */
-  main { display: flex; flex-direction: column; gap: 40px; padding-top: 26px; }
-  section { padding: 22px 12px 12px; border-radius: 28px; background: color-mix(in oklab, var(--g) 9%, var(--choc));
-    box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--g) 38%, transparent); }
-  section h2 { margin: 0 8px 16px; font-family: Corm; font-style: italic; font-weight: 600; font-size: 44px; line-height: 1; letter-spacing: -.5px; color: var(--g); }
-  .list { display: flex; flex-direction: column; gap: 12px; }
-
-  /* карточка: фото целиком сверху (у Slevomat все фото 2:1 - так ничего не режется), скидка крупно на фото; ниже что, где, цена.
-     Нажимается вся карточка (Миша 27.10.26: квадрат резал лица) */
-  .card { display: block; border-radius: 20px; overflow: hidden; background: rgba(43,26,18,.72); transition: background .2s ease-out, transform .15s ease-out; }
-  .card:hover { background: rgba(43,26,18,.95); }
-  .card:active { transform: scale(.985); }
-  .ph { position: relative; aspect-ratio: 2 / 1; overflow: hidden; background: var(--choc); }
-  .ph img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.92) sepia(.08); }
-  /* скидка крупно (Миша 27.10.26: «не видно, какая скидка») */
-  .off { position: absolute; left: 0; bottom: 0; padding: 10px 16px 9px 14px; border-radius: 0 16px 0 0; background: var(--g); color: var(--choc);
-    font-family: Unb; font-weight: 800; font-size: 28px; line-height: 1; letter-spacing: -.5px; font-variant-numeric: tabular-nums; }
-  .bd { padding: 14px 16px 16px; }
-  .what { display: block; font-weight: 700; font-size: 22px; line-height: 1.2; color: var(--cream); text-wrap: balance; }
-  .pl { display: block; margin-top: 4px; font-size: 16px; line-height: 1.3; color: var(--dim); }
-  .price { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
-  .price em { font-style: normal; font-weight: 800; font-size: 26px; color: var(--g); font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .price svg { flex: 0 0 auto; width: 40px; height: 40px; padding: 11px; border-radius: 50%; background: var(--g); color: var(--choc); }
+  /* плитка раздела: фото на всю плитку, снизу затемнение, название крупно, подпись, стрелка */
+  main { display: flex; flex-direction: column; gap: 16px; padding-top: 30px; }
+  .tile { position: relative; display: block; aspect-ratio: 16 / 10; border-radius: 28px; overflow: hidden; background: var(--card);
+    box-shadow: inset 0 0 0 1.5px var(--line); transition: transform .15s ease-out; }
+  .tile:active { transform: scale(.985); }
+  .tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(.92) sepia(.1); }
+  .tile::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(43,26,18,0) 30%, rgba(43,26,18,.88) 92%); }
+  .tile .tx { position: absolute; left: 22px; right: 80px; bottom: 20px; z-index: 1; }
+  .tile b { display: block; font-family: Corm; font-style: italic; font-weight: 600; font-size: 46px; line-height: 1; letter-spacing: -.5px; color: var(--g); }
+  .tile span { display: block; margin-top: 8px; font-size: 17px; line-height: 1.3; color: var(--cream); }
+  .tile svg { position: absolute; right: 20px; bottom: 22px; z-index: 1; width: 46px; height: 46px; padding: 13px; border-radius: 50%; background: var(--g); color: var(--choc); }
+  #t-skidki { --g: #F2DB98; } #t-trips { --g: #A9CDA2; }
 
   footer { margin-top: 48px; padding: 28px 0 48px; border-top: 1px solid rgba(244,180,142,.14); text-align: center; font-size: 16px; color: var(--dim); }
-  footer p + p { margin-top: 8px; }
   footer .ig2 { display: inline-flex; align-items: center; gap: 10px; height: 52px; margin-bottom: 20px; padding: 0 22px; border-radius: 999px;
     box-shadow: inset 0 0 0 1.5px var(--line); color: var(--cream); font-weight: 600; font-size: 18px; }
   footer .ig2 svg { width: 20px; height: 20px; }
-
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
 <body>
@@ -104,68 +74,27 @@
     </a>
   </header>
 
-  <div class="week">
-    <h1>Скидки недели</h1>
-    <p><b id="week"></b> · обновляю каждый понедельник</p>
-  </div>
-
-  <nav><div class="row" id="tabs"></div></nav>
-  <main id="groups"></main>
+  <main>
+    <a class="tile" id="t-skidki" href="skidki/" data-umami-event="главная: скидки недели">
+      <img src="img/d_2432952.jpg" alt="">
+      <div class="tx"><b>Скидки недели</b><span>Спа, ужины, квесты и детям - каждый понедельник</span></div>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg>
+    </a>
+    <a class="tile" id="t-trips" href="trips/" data-umami-event="главная: куда съездить">
+      <img src="img/t_357390.jpg" alt="">
+      <div class="tx"><b>Куда съездить</b><span>Экскурсии в Праге и поездки из Праги - каждую среду</span></div>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg>
+    </a>
+  </main>
 
   <footer>
     <a class="ig2" href="https://www.instagram.com/ahoj_ira/" target="_blank" rel="noopener" data-umami-event="Инстаграм (низ)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
       @ahoj_ira
     </a>
-    <p>Цены и скидки - со Slevomat на начало недели, могут поменяться.</p>
     <p>Ссылки партнёрские: вам цена та же, а блогу это помогает.</p>
   </footer>
 </div>
 <div id="grain"></div>
-
-<script>
-const WEEK = '27.10 - 2.11';
-const AFF = '?utm_source=affiliate&utm_medium=cpc&utm_campaign=dis_akv_gen_cze_all_buy_ahojira_ahojiraCZ&utm_content=web&utm_term=ahojira';
-const COLORS = { her: '#F4B48E', him: '#F2DB98', kids: '#A9CDA2', two: '#E9967A' };   // те же, что #her... в стилях
-const GROUPS = [['her', 'Для неё'], ['him', 'Для него'], ['kids', 'Для деток'], ['two', 'Вдвоём']];
-// [группа, id акции Slevomat, скидка, что, место, район, цена]
-const DEALS = [
-  ['her',  '2456000-kralovske-vanocni-balicky-s-masazi-pro-zeny-pro-muze-i-pary', 69, 'Спа-ритуал 1,5 часа', 'Royal Jasmine Spa', 'Staré Město', '879'],
-  ['her',  '2457494-az-60-minut-relaxacni-masaze-v-centru-prahy', 60, 'Массаж 30 минут', 'Thajský ráj', 'Staré Město', '315'],
-  ['her',  '2402362-mikrojehlickova-mezoterapie-s-kyselinou-hyaluronovou', 47, 'Мезотерапия лица', 'Face Secret Studio', 'Nové Město', '999'],
-  ['him',  '2441566-namichejte-si-vlastni-rum-2hodinovy-kurz-s-degustaci', 36, 'Свой ром с дегустацией', 'Barstars', 'Smíchov', '999'],
-  ['him',  '2428112-historicka-show-5chodove-menu-a-neomezene-napoje', 28, 'Средневековое шоу с ужином', 'Krčma U Pavouka', 'Staré Město', '1 299'],
-  ['him',  '2428872-detektivni-unikova-hra-predstirana-smrt', 23, 'Детективный квест', 'HiddenStory', 'Vinohrady', '1 299'],
-  ['him',  '2433612-doubleburger-s-tuplakem-piva-u-i-p-pavlova', 22, 'Двойной бургер и литр пива', 'Restaurace Legenda', 'Nové Město', '399'],
-  ['kids', '2437904-s-rodinou-za-rybkami-vstup-do-morskeho-sveta', 29, 'Морской аквариум', 'Mořský svět', 'Bubeneč', '299'],
-  ['kids', '2434556-nejnovejsi-listopadova-show-cirkusu-humberto-v-prazskych-letnanech', 25, 'Цирк Humberto', 'Cirkus Humberto', 'Letňany', '299'],
-  ['kids', '2441380-ve-vsedni-den-do-detskeho-centra-s-mnoha-atrakcemi', 20, 'Детский игровой центр', 'Tanzania Park', 'Horní Měcholupy', '159'],
-  ['two',  '2432952-3chodove-menu-s-vyhledem-na-karluv-most-pro-1-ci-2', 38, 'Ужин с видом на Карлов мост', 'Charles Bridge restaurant', 'Nové Město', '699'],
-  ['two',  '2437564-privatni-wellness-s-pizzou-a-billiardem-1-3-hod', 37, 'Приватный велнес с пиццей', 'Hotel Otakar', 'Nusle', '599'],
-];
-
-const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-document.getElementById('week').textContent = WEEK;
-document.getElementById('tabs').innerHTML = GROUPS.map(([k, t]) => `<a href="#${k}" data-k="${k}" style="--g:${COLORS[k]}" data-umami-event="вкладка: ${t}">${t}</a>`).join('');
-document.getElementById('groups').innerHTML = GROUPS.map(([k, t]) =>
-  `<section id="${k}"><h2>${t}</h2><div class="list">` + DEALS.filter(d => d[0] === k).map(([, slug, off, what, place, area, price]) =>
-    `<a class="card" href="https://www.slevomat.cz/akce/${slug}${AFF}" target="_blank" rel="sponsored noopener" data-umami-event="${esc(what)}" data-umami-event-group="${t}" data-umami-event-off="-${off}%">
-      <div class="ph"><img src="img/d_${slug.split('-')[0]}.jpg" alt="" loading="lazy"><span class="off">-${off}%</span></div>
-      <div class="bd">
-        <span class="what">${esc(what)}</span>
-        <span class="pl">${esc(place)}</span>
-        <div class="price"><em>${price}&nbsp;Kč</em><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg></div>
-      </div>
-    </a>`).join('') + '</div></section>'
-).join('');
-
-// подсветка вкладки той группы, что сейчас на экране
-const tabs = [...document.querySelectorAll('#tabs a')];
-const io = new IntersectionObserver(es => es.forEach(e => {
-  if (!e.isIntersecting) return;
-  tabs.forEach(a => a.classList.toggle('on', a.dataset.k === e.target.id));
-}), { rootMargin: '-30% 0px -65% 0px' });
-document.querySelectorAll('section').forEach(s => io.observe(s));
-</script>
 </body>
 </html>
