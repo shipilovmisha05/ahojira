@@ -101,15 +101,15 @@
 <div class="wrap">
   <header>
     <a class="ava" href="/" aria-label="На главную"><img src="../img/ira.jpg" alt="Ира"></a>
-    <div class="who"><b>Ahoj, Ira</b><span>Нескучная Чехия, Прага</span></div>
+    <div class="who"><b>Ahoj, Ira</b><span data-t="sub">Нескучная Чехия, Прага</span></div>
     <a class="ig" href="https://www.instagram.com/ahoj_ira/" target="_blank" rel="noopener" data-umami-event="Инстаграм (шапка)" aria-label="Инстаграм Иры">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
     </a>
   </header>
 
   <div class="week">
-    <h1>Куда съездить</h1>
-    <p>Экскурсии в Праге и поездки из Праги</p>
+    <h1 data-t="h1">Куда съездить</h1>
+    <p data-t="lead">Экскурсии в Праге и поездки из Праги</p>
   </div>
 
   <nav><div class="row" id="tabs"></div></nav>
@@ -120,49 +120,77 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
       @ahoj_ira
     </a>
-    <p>Цены - с GetYourGuide на день выхода, могут поменяться. Отмена бесплатно за 24 часа.</p>
-    <p>Ссылки партнёрские: вам цена та же, а блогу это помогает.</p>
+    <p data-t="foot">Цены - с GetYourGuide на день выхода, могут поменяться. Отмена бесплатно за 24 часа.</p>
+    <p data-t="aff">Ссылки партнёрские: вам цена та же, а блогу это помогает.</p>
   </footer>
 </div>
 <div id="grain"></div>
+<script src="../lang.js"></script>
 
 <script>
 const AFF = '?partner_id=9GYKQCJ&utm_medium=online_publisher&cmp=ahojira_trips';   // партнёрка GetYourGuide (Partner ID Миши, 30.10.26)
+const GYG = { uk: '', ru: 'ru-ru/', cs: '' };   // рус - русская версия GYG; укр и чеш - без языка в адресе, GYG сам берёт язык браузера
 const COLORS = { prague: '#F4B48E', out: '#A9CDA2' };   // те же, что #prague, #out в стилях
-const GROUPS = [['prague', 'В Праге'], ['out', 'Из Праги']];
-// [группа, адрес тура на getyourguide.com (ru-ru/...-tNNN/), длительность, что, о чём, цена от] - новые сверху
+const GROUPS = { uk: [['prague', 'У Празі'], ['out', 'З Праги']], ru: [['prague', 'В Праге'], ['out', 'Из Праги']], cs: [['prague', 'V Praze'], ['out', 'Z Prahy']] };
+const OT = { uk: 'від', ru: 'от', cs: 'od' };
+const LI = { uk: 0, ru: 1, cs: 2 };
+// [группа, адрес тура на getyourguide.com (...-tNNN), длительность, что, о чём, цена от] - новые сверху; тексты [укр, рус, чеш]
 const TRIPS = [
-  ['out',    'prague-l10/from-prague-karlovy-vary-visit-of-moser-factory-t52488', '9,5 часа', 'Карловы Вары', 'Поездка на весь день из Праги', '1 292'],
-  ['prague', 'prague-l10/prague-castle-side-breweries-pubs-guided-walking-tour-t445678', '3 часа', 'Пивной тур по Малой Стране', 'Прогулка по пабам и пивоварням', '1 245'],
-  ['out',    'prague-l10/from-prague-bohemian-saxon-switzerland-all-inclusive-tour-t224523', '9 часов', 'Чешская Швейцария', 'Поездка на природу из Праги', '2 675'],
-  ['prague', 'prague-l10/prague-beer-bath-with-unlimited-beer-t230002', '1 час', 'Пивное спа Bernard', 'Ванна на двоих и пиво без ограничений', '2 666'],
-  ['prague', 'prague-l10/prague-old-town-medieval-underground-dungeon-history-tou-t43385', '85 мин', 'Подземелья Старого города', 'Историческая экскурсия по подземельям', '657'],
-  ['prague', 'prague-l10/prague-50-minute-sightseeing-evening-cruise-t357390', '50 мин', 'Вечерний круиз по Влтаве', 'Прогулка на кораблике по вечерней Праге', '438'],
-  ['out',    'prague-l10/day-tour-to-cesky-krumlov-with-lunch-t57538', '10 часов', 'Чешский Крумлов', 'Экскурсия на весь день из Праги · гид говорит по-русски', '2 142'],
-  ['out',    'prague-l10/from-prague-kutna-hora-stbarbara-s-church-sedlec-ossuary-t64075', '6 часов', 'Кутна Гора', 'Экскурсия на полдня из Праги · гид говорит по-русски', '1 875'],
+  ['out',    'prague-l10/from-prague-karlovy-vary-visit-of-moser-factory-t52488', ['9,5 години', '9,5 часа', '9,5 hodiny'],
+    ['Карлові Вари', 'Карловы Вары', 'Karlovy Vary'], ['Поїздка на весь день з Праги', 'Поездка на весь день из Праги', 'Celodenní výlet z Prahy'], '1 292'],
+  ['prague', 'prague-l10/prague-castle-side-breweries-pubs-guided-walking-tour-t445678', ['3 години', '3 часа', '3 hodiny'],
+    ['Пивний тур Малою Страною', 'Пивной тур по Малой Стране', 'Pivní túra po Malé Straně'], ['Прогулянка пабами та пивоварнями', 'Прогулка по пабам и пивоварням', 'Procházka po hospodách a pivovarech'], '1 245'],
+  ['out',    'prague-l10/from-prague-bohemian-saxon-switzerland-all-inclusive-tour-t224523', ['9 годин', '9 часов', '9 hodin'],
+    ['Чеська Швейцарія', 'Чешская Швейцария', 'České Švýcarsko'], ['Поїздка на природу з Праги', 'Поездка на природу из Праги', 'Výlet do přírody z Prahy'], '2 675'],
+  ['prague', 'prague-l10/prague-beer-bath-with-unlimited-beer-t230002', ['1 година', '1 час', '1 hodina'],
+    ['Пивне спа Bernard', 'Пивное спа Bernard', 'Pivní lázně Bernard'], ['Ванна на двох і пиво без обмежень', 'Ванна на двоих и пиво без ограничений', 'Koupel pro dva a pivo bez omezení'], '2 666'],
+  ['prague', 'prague-l10/prague-old-town-medieval-underground-dungeon-history-tou-t43385', ['85 хв', '85 мин', '85 min'],
+    ['Підземелля Старого міста', 'Подземелья Старого города', 'Podzemí Starého Města'], ['Історична екскурсія підземеллями', 'Историческая экскурсия по подземельям', 'Historická prohlídka podzemí'], '657'],
+  ['prague', 'prague-l10/prague-50-minute-sightseeing-evening-cruise-t357390', ['50 хв', '50 мин', '50 min'],
+    ['Вечірній круїз Влтавою', 'Вечерний круиз по Влтаве', 'Večerní plavba po Vltavě'], ['Прогулянка кораблем вечірньою Прагою', 'Прогулка на кораблике по вечерней Праге', 'Projížďka lodí večerní Prahou'], '438'],
+  ['out',    'prague-l10/day-tour-to-cesky-krumlov-with-lunch-t57538', ['10 годин', '10 часов', '10 hodin'],
+    ['Чеський Крумлов', 'Чешский Крумлов', 'Český Krumlov'], ['Екскурсія на весь день з Праги · гід говорить російською', 'Экскурсия на весь день из Праги · гид говорит по-русски', 'Celodenní výlet z Prahy · průvodce mluví rusky'], '2 142'],
+  ['out',    'prague-l10/from-prague-kutna-hora-stbarbara-s-church-sedlec-ossuary-t64075', ['6 годин', '6 часов', '6 hodin'],
+    ['Кутна Гора', 'Кутна Гора', 'Kutná Hora'], ['Екскурсія на півдня з Праги · гід говорить російською', 'Экскурсия на полдня из Праги · гид говорит по-русски', 'Půldenní výlet z Prahy · průvodce mluví rusky'], '1 875'],
 ];
 
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-document.getElementById('tabs').innerHTML = GROUPS.map(([k, t]) => `<a href="#${k}" data-k="${k}" style="--g:${COLORS[k]}" data-umami-event="вкладка: ${t}">${t}</a>`).join('');
-document.getElementById('groups').innerHTML = GROUPS.map(([k, t]) =>
-  `<section id="${k}"><h2>${t}</h2><div class="list">` + TRIPS.filter(d => d[0] === k).map(([, path, dur, what, about, price]) =>
-    `<a class="card" href="https://www.getyourguide.com/ru-ru/${path}/${AFF}" target="_blank" rel="sponsored noopener" data-umami-event="${esc(what)}" data-umami-event-group="${t}">
-      <div class="ph"><img src="../img/t_${path.split('-t').pop()}.jpg" alt="" loading="lazy"><span class="off">${dur}</span></div>
-      <div class="bd">
-        <span class="what">${esc(what)}</span>
-        <span class="pl">${esc(about)}</span>
-        <div class="price"><em><small>от</small> ${price}&nbsp;Kč</em><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg></div>
-      </div>
-    </a>`).join('') + '</div></section>'
-).join('');
 
 // подсветка вкладки той группы, что сейчас на экране
-const tabs = [...document.querySelectorAll('#tabs a')];
+let tabs = [];
 const io = new IntersectionObserver(es => es.forEach(e => {
   if (!e.isIntersecting) return;
   tabs.forEach(a => a.classList.toggle('on', a.dataset.k === e.target.id));
 }), { rootMargin: '-30% 0px -65% 0px' });
-document.querySelectorAll('section').forEach(s => io.observe(s));
+
+// события Umami - по-русски на любом языке, чтобы статистика не делилась на три; язык отдельным полем
+const render = L => {
+  const i = LI[L], ru = Object.fromEntries(GROUPS.ru);
+  document.getElementById('tabs').innerHTML = GROUPS[L].map(([k, t]) => `<a href="#${k}" data-k="${k}" style="--g:${COLORS[k]}" data-umami-event="вкладка: ${ru[k]}">${t}</a>`).join('');
+  document.getElementById('groups').innerHTML = GROUPS[L].map(([k, t]) =>
+    `<section id="${k}"><h2>${t}</h2><div class="list">` + TRIPS.filter(d => d[0] === k).map(([, path, dur, what, about, price]) =>
+      `<a class="card" href="https://www.getyourguide.com/${GYG[L]}${path}/${AFF}" target="_blank" rel="sponsored noopener" data-umami-event="${esc(what[1])}" data-umami-event-group="${ru[k]}" data-umami-event-lang="${L}">
+        <div class="ph"><img src="../img/t_${path.split('-t').pop()}.jpg" alt="" loading="lazy"><span class="off">${dur[i]}</span></div>
+        <div class="bd">
+          <span class="what">${esc(what[i])}</span>
+          <span class="pl">${esc(about[i])}</span>
+          <div class="price"><em><small>${OT[L]}</small> ${price}&nbsp;Kč</em><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg></div>
+        </div>
+      </a>`).join('') + '</div></section>'
+  ).join('');
+  tabs = [...document.querySelectorAll('#tabs a')];
+  io.disconnect();
+  document.querySelectorAll('section').forEach(s => io.observe(s));
+};
+
+ahojLang({
+  uk: { title: 'Ahoj, Ira - куди поїхати в Празі та з Праги', sub: 'Не нудна Чехія, Прага', h1: 'Куди поїхати', lead: 'Екскурсії Прагою та поїздки з Праги',
+        foot: 'Ціни - з GetYourGuide на день виходу, можуть змінитися. Скасування безкоштовне за 24 години.', aff: 'Посилання партнерські: для вас ціна та сама, а блогу це допомагає.' },
+  ru: { title: 'Ahoj, Ira - куда съездить в Праге и из Праги', sub: 'Нескучная Чехия, Прага', h1: 'Куда съездить', lead: 'Экскурсии в Праге и поездки из Праги',
+        foot: 'Цены - с GetYourGuide на день выхода, могут поменяться. Отмена бесплатно за 24 часа.', aff: 'Ссылки партнёрские: вам цена та же, а блогу это помогает.' },
+  cs: { title: 'Ahoj, Ira - kam vyrazit v Praze a z Prahy', sub: 'Nenudné Česko, Praha', h1: 'Kam vyrazit', lead: 'Prohlídky Prahy a výlety z Prahy',
+        foot: 'Ceny jsou z GetYourGuide ke dni vydání, mohou se změnit. Zrušení zdarma do 24 hodin předem.', aff: 'Odkazy jsou partnerské: vy zaplatíte stejně a blogu to pomůže.' },
+}, render);
 </script>
 </body>
 </html>
