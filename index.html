@@ -68,7 +68,7 @@
 <div class="wrap">
   <header>
     <div class="ava"><img src="img/ira.jpg" alt="Ира"></div>
-    <div class="who"><b>Ahoj, Ira</b><span>Нескучная Чехия, Прага</span></div>
+    <div class="who"><b>Ahoj, Ira</b><span data-t="sub">Нескучная Чехия, Прага</span></div>
     <a class="ig" href="https://www.instagram.com/ahoj_ira/" target="_blank" rel="noopener" data-umami-event="Инстаграм (шапка)" aria-label="Инстаграм Иры">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
     </a>
@@ -77,12 +77,12 @@
   <main>
     <a class="tile" id="t-skidki" href="skidki/" data-umami-event="главная: скидки недели">
       <img src="img/d_2432952.jpg" alt="">
-      <div class="tx"><b>Скидки недели</b><span>Спа, рестораны, квесты, детские развлечения</span></div>
+      <div class="tx"><b data-t="skidki">Скидки недели</b><span data-t="skidkiSub">Спа, рестораны, квесты, детские развлечения</span></div>
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg>
     </a>
     <a class="tile" id="t-trips" href="trips/" data-umami-event="главная: куда съездить">
       <img src="img/t_357390.jpg" alt="">
-      <div class="tx"><b>Куда съездить</b><span>Экскурсии в Праге и поездки из Праги</span></div>
+      <div class="tx"><b data-t="trips">Куда съездить</b><span data-t="tripsSub">Экскурсии в Праге и поездки из Праги</span></div>
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg>
     </a>
   </main>
@@ -92,9 +92,20 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
       @ahoj_ira
     </a>
-    <p>Ссылки партнёрские: вам цена та же, а блогу это помогает.</p>
+    <p data-t="aff">Ссылки партнёрские: вам цена та же, а блогу это помогает.</p>
   </footer>
 </div>
 <div id="grain"></div>
+<script src="lang.js"></script>
+<script>
+ahojLang({
+  uk: { title: 'Ahoj, Ira - знижки та поїздки Прагою', sub: 'Не нудна Чехія, Прага', skidki: 'Знижки тижня', skidkiSub: 'Спа, ресторани, квести, розваги для дітей',
+        trips: 'Куди поїхати', tripsSub: 'Екскурсії Прагою та поїздки з Праги', aff: 'Посилання партнерські: для вас ціна та сама, а блогу це допомагає.' },
+  ru: { title: 'Ahoj, Ira - скидки и поездки по Праге', sub: 'Нескучная Чехия, Прага', skidki: 'Скидки недели', skidkiSub: 'Спа, рестораны, квесты, детские развлечения',
+        trips: 'Куда съездить', tripsSub: 'Экскурсии в Праге и поездки из Праги', aff: 'Ссылки партнёрские: вам цена та же, а блогу это помогает.' },
+  cs: { title: 'Ahoj, Ira - slevy a výlety v Praze', sub: 'Nenudné Česko, Praha', skidki: 'Slevy týdne', skidkiSub: 'Wellness, restaurace, únikovky, zábava pro děti',
+        trips: 'Kam vyrazit', tripsSub: 'Prohlídky Prahy a výlety z Prahy', aff: 'Odkazy jsou partnerské: vy zaplatíte stejně a blogu to pomůže.' },
+}, () => {});
+</script>
 </body>
 </html>
