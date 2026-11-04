@@ -1,11 +1,11 @@
-/* ahojira.cz - выбор языка (Миша 04.11.26): при первом заходе экран с тремя кнопками - украинский, русский, чешский.
+/* ahojira.cz - выбор языка (Миша 04.11.26): при первом заходе экран с тремя кнопками - чешский, украинский, русский (порядок - Миша 04.11.26).
    Выбор помнится в браузере, все страницы дальше на этом языке; кнопка UA/RU/CZ в шапке открывает выбор заново.
    Ссылка с ?lang=uk / ?lang=ru / ?lang=cs открывает сразу нужный язык (например, стикер в сторис чешского аккаунта).
    Страница вызывает ahojLang(T, render): T = { uk: {...}, ru: {...}, cs: {...} } - тексты для [data-t="ключ"] и title,
    render(L) - перерисовать списки на языке L. */
 (() => {
-  const NAMES = { uk: 'Українська', ru: 'Русский', cs: 'Čeština' };
-  const SHORT = { uk: 'UA', ru: 'RU', cs: 'CZ' };
+  const NAMES = { cs: 'Čeština', uk: 'Українська', ru: 'Русский' };   // в этом порядке кнопки на экране выбора
+  const SHORT = { cs: 'CZ', uk: 'UA', ru: 'RU' };
 
   document.head.insertAdjacentHTML('beforeend', `<style>
   .lang { flex: 0 0 auto; height: 48px; padding: 0 16px; border: 0; border-radius: 999px; background: none; box-shadow: inset 0 0 0 1.5px var(--line);
@@ -43,7 +43,7 @@
     pick.innerHTML = `<div class="pk">
       <div class="ava"><img src="${header.querySelector('.ava img').getAttribute('src')}" alt=""></div>
       <h2>Ahoj, Ira</h2>
-      <p>Оберіть мову<br>Выберите язык<br>Vyberte jazyk</p>
+      <p>Vyberte jazyk<br>Оберіть мову<br>Выберите язык</p>
       ${Object.keys(NAMES).map(L => `<button data-l="${L}">${NAMES[L]}<i>${SHORT[L]}</i></button>`).join('')}
     </div>`;
     document.body.appendChild(pick);
